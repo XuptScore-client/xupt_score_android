@@ -38,11 +38,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class WelcomeActivity extends Activity {
 
-  private LinearLayout welcome;
+  private ImageView welcome;
 
   @SuppressLint("NewApi")
   @Override
@@ -51,7 +50,7 @@ public class WelcomeActivity extends Activity {
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     Util.setContext(getApplicationContext());
     Util.setLanguageShare(WelcomeActivity.this);
-    welcome = (LinearLayout) findViewById(R.id.welcome);
+
     if (!ConnectionUtil.isConn(getApplicationContext())) {
       ConnectionUtil.setNetworkMethod(WelcomeActivity.this);
       Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
@@ -97,19 +96,22 @@ public class WelcomeActivity extends Activity {
 
     H5Log.d(getApplicationContext(), String.valueOf(Util.isDebugable(getApplicationContext())));
     final View view = View.inflate(this, R.layout.activity_welcome, null);
-    
-    setContentView(view);
 
+    setContentView(view);
+    welcome = (ImageView) findViewById(R.id.welcome);
     AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-    aa.setDuration(2000);
+    aa.setDuration(3000);
     view.startAnimation(aa);
 
     aa.setAnimationListener(new AnimationListener() {
       @Override
       public void onAnimationEnd(Animation arg0) {
         SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
-        String session = preferences.getString(StaticVarUtil.SESSION, "");
+        String acount = preferences.getString(StaticVarUtil.ACCOUNT, "");
+        String pass = preferences.getString(StaticVarUtil.PASSWORD, "");
+        String session = preferences.getString(acount + pass + StaticVarUtil.SESSION, "");
         if (session != null && !session.isEmpty()) {
+          System.out.println("autoLogin");
           autoLogin();
         } else {
           GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
@@ -131,14 +133,19 @@ public class WelcomeActivity extends Activity {
   }
 
   private Handler mHandler;
-  private Bitmap bitmap;
   @SuppressLint("NewApi")
   Runnable runnableUi = new Runnable() {
     @Override
     public void run() {
-      welcome.setBackground(new BitmapDrawable(bitmap));
-    }
-
+      if(StaticVarUtil.welcomeBitmap != null){
+        try {
+          welcome.setBackground(new BitmapDrawable(StaticVarUtil.welcomeBitmap));
+        } catch (NoSuchFieldError e) {
+          // TODO: handle exception
+        }
+       
+      }
+      }
   };
 
   class GetImageMsgAsytask extends AsyncTask<String, String, String> {
@@ -163,6 +170,7 @@ public class WelcomeActivity extends Activity {
       super.onPostExecute(result);
       try {
         if (isWelcome) {
+          mHandler = new Handler();
           result = !HttpUtilMc.CONNECT_EXCEPTION.equals(result) ? result : "0|0|0";
           String[] imageAndTime = result.split("\\|");
           final String imageTime = imageAndTime[0];
@@ -180,7 +188,7 @@ public class WelcomeActivity extends Activity {
                   // TODO Auto-generated catch block
                   e.printStackTrace();
                 }
-                bitmap = Util.getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
+                StaticVarUtil.welcomeBitmap = Util.getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
                 mHandler.post(runnableUi);
               }
             }.start();
@@ -203,18 +211,30 @@ public class WelcomeActivity extends Activity {
   }
 
   private void autoLogin() {
-    LoginAsynctask loginAsyntask = new LoginAsynctask(WelcomeActivity.this, "", "", "",
+    SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
+    String acountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
+    String passStr = preferences.getString(StaticVarUtil.PASSWORD, "");
+    String session = preferences.getString(acountStr + passStr + StaticVarUtil.SESSION, "");
+
+    Util.getAutoParmas(getApplicationContext(), session);
+    LoginAsynctask loginAsyntask = new LoginAsynctask(WelcomeActivity.this, acountStr, "", "",
         new LoginAsynctask.LoginResult() {
 
           @Override
           public void onLogin(String result) {
             // TODO Auto-generated method stub
 
+            if (result == null) {
+              GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+              getImageMsgAsytask.execute();
+              return;
+            }
             try {
               if (!HttpUtilMc.CONNECT_EXCEPTION.equals(result)) {
                 if (result.equals("error") || result.equals("errorReq")) {
                   ViewUtil.showToast(WelcomeActivity.this, "证书过期，请重新登录。");
-
+                  GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+                  getImageMsgAsytask.execute();
                   // progressDialog.cancel();
                 } else {
                   StaticVarUtil.listHerf = new ArrayList<HashMap<String, String>>();
@@ -230,7 +250,7 @@ public class WelcomeActivity extends Activity {
                   SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO,
                       MODE_PRIVATE);
                   String accountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
-                  String sessionStr = preferences.getString(StaticVarUtil.SESSION, "");
+                  String sessionStr = preferences.getString(accountStr + StaticVarUtil.SESSION, "");
                   String passwordStr = preferences.getString(StaticVarUtil.PASSWORD, "");
 
                   StaticVarUtil.student.setAccount(accountStr);
@@ -250,6 +270,8 @@ public class WelcomeActivity extends Activity {
               }
             } catch (Exception e) {
               // TODO: handle exception
+              GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+              getImageMsgAsytask.execute();
               Log.i("LoginActivity", e.toString());
             }
 

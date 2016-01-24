@@ -1,5 +1,6 @@
 package com.xy.fy.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 
+import com.mc.util.Util;
 import com.xy.fy.singleton.BookList;
 import com.xy.fy.singleton.Comment;
 import com.xy.fy.singleton.Message;
@@ -88,7 +91,7 @@ public class StaticVarUtil {
   public static final String USER_INFO = "userinfo";
   public static final String IS_REMEMBER = "isRemember";
   public static final String SESSION = "session";
-  
+
   public static final String LANGUAGE_INFO = "languageInfo";
   public static final String LANGUAGE = "language";
   public static ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -97,6 +100,18 @@ public class StaticVarUtil {
 
   public static String PATH = null;// 应用的目录"/sdcard/xuptscore"
 
+  static {
+    if (Util.isExternalStorageWritable()) {
+      PATH = "/sdcard/xuptscore/";// 设置文件目录
+    } else {
+      PATH = "/data/data/com.xy.fy.main/";// 设置文件目录
+    }
+    if (!new File(StaticVarUtil.PATH).exists()) {
+      new File(StaticVarUtil.PATH).mkdirs();
+    }
+  }
+
+  public static Bitmap welcomeBitmap = null;
   public static String response = null;// 服务器返回的数据
 
   public static String largePicPath = null;// 大图片路径
@@ -119,6 +134,9 @@ public class StaticVarUtil {
   public static String data = null;
   public static String viewstate = null;
 
+  public static String autoData = null;
+  public static String autoViewSatte = null;
+
   public static String libData = null;
   public static String libViewstate = null;
 
@@ -128,7 +146,7 @@ public class StaticVarUtil {
   public static String accountData = null;
   public static String accountViewstate = null;
   public static String libNameViewstate = null;
-  
+
   public static ArrayList<HashMap<String, Object>> listItem;
   public static String bindLibName = null;
   public static long time;

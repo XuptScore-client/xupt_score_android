@@ -141,6 +141,20 @@ public abstract class FragmentBase extends Fragment {
 				new OnLeftButtonClickListener());
 	}
 	
+	/**
+   * 只有左边按钮和Title initTopBarLayout
+   * 
+   * @throws
+   */
+  public void initTopBarForLeft(String titleName,int rightDrawableId,
+      onLeftImageButtonClickListener listener) {
+    mHeaderLayout = (HeaderLayout)findViewById(R.id.common_actionbar);
+    mHeaderLayout.init(HeaderStyle.TITLE_LIFT_IMAGEBUTTON);
+    mHeaderLayout.setTitleAndLeftImageButton(titleName,
+        rightDrawableId,
+        listener);
+  }
+	
 	/** 右边+title
 	  * initTopBarForRight
 	  * @return void

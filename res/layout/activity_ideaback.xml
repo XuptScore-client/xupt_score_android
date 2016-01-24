@@ -72,6 +72,7 @@
             android:layout_weight="1"
             android:ems="11"
             android:hint="@string/feedback_txt2"
+            android:textCursorDrawable="@color/black"
             android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"

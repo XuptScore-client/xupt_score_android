@@ -215,7 +215,7 @@
     <string name="logining">正在登录</string>
     <string name="ok">确定</string>
     <string name="cancle">取消</string>
-    <string name="repeat_login">服务器异常，请重新登录</string>
+    <string name="repeat_login">服务器维护中，请稍等</string>
     <string name="repeating_login">服务器异常，正在重新登录</string>
     <string name="check_version">最新版本</string>
     <string name="save_Qr_code">保存二维码</string>

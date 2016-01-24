@@ -4,12 +4,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <ImageView
         android:id="@+id/welcome"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/activity_welcome_background"
         android:orientation="vertical" >
-    </LinearLayout>
+    </ImageView>
 
 </LinearLayout>

@@ -42,6 +42,7 @@ import com.mc.util.H5Toast;
 import com.mc.util.Util;
 import com.xy.fy.main.R;
 import com.xy.fy.util.FileUtils;
+import com.xy.fy.util.Flag;
 import com.xy.fy.util.StaticVarUtil;
 import com.xy.fy.util.ViewUtil;
 
@@ -217,6 +218,10 @@ public class BaseActivity extends FragmentActivity {
    * void @throws
    */
   public void updateUserInfos() {
+    if (Flag.arg0 != null) {
+      CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(Flag.arg0));
+      return;
+    }
     // 更新地理位置信息
     final ProgressDialog dialog = ViewUtil.getProgressDialog(this, "正在加载联系人...");
     dialog.show();
@@ -241,6 +246,7 @@ public class BaseActivity extends FragmentActivity {
       @Override
       public void onSuccess(List<BmobChatUser> arg0) {
         // TODO Auto-generated method stub
+        Flag.arg0 = arg0;
         // 保存到application中方便比较
         CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(arg0));
         isCanTouch = true;

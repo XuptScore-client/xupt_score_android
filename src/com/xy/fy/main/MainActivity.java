@@ -23,6 +23,7 @@ import com.bmob.im.demo.ui.NewFriendActivity;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
 import com.bmob.im.demo.ui.fragment.SettingsFragment;
+import com.bmob.im.demo.util.CollectionUtils;
 import com.bmob.im.demo.view.HeaderLayout;
 import com.fima.cardsui.views.CardUI;
 import com.mc.db.DBConnection;
@@ -52,8 +53,10 @@ import com.xy.fy.asynctask.ShowCardAsyncTask;
 import com.xy.fy.asynctask.UploadFileAsytask;
 import com.xy.fy.asynctask.XuptLibLoginAsynctask;
 import com.xy.fy.singleton.BookList;
+import com.xy.fy.singleton.Student;
 import com.xy.fy.util.BitmapUtil;
 import com.xy.fy.util.ConnectionUtil;
+import com.xy.fy.util.Flag;
 import com.xy.fy.util.ShareUtil;
 import com.xy.fy.util.StaticVarUtil;
 import com.xy.fy.util.TestArrayAdapter;
@@ -122,6 +125,7 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
+import cn.sharesdk.framework.authorize.e;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 public class MainActivity extends BaseActivity implements EventListener {
@@ -172,11 +176,17 @@ public class MainActivity extends BaseActivity implements EventListener {
     super.setContentView(R.layout.activity_main);
     Util.setContext(getApplicationContext());
     mHandler = new MyHandler(this);
+    if (StaticVarUtil.welcomeBitmap != null) {
+      StaticVarUtil.welcomeBitmap.recycle();// clear cache.
+    }
+    
     // save session
     SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
     Editor editor = preferences.edit();
-    editor.putString(StaticVarUtil.ACCOUNT, StaticVarUtil.student.getAccount());
-    editor.putString(StaticVarUtil.SESSION, StaticVarUtil.session);
+    if (StaticVarUtil.session != null && !StaticVarUtil.session.isEmpty()) {
+      editor.putString(StaticVarUtil.student.getAccount() + StaticVarUtil.student.getPassword()
+          + StaticVarUtil.SESSION, StaticVarUtil.session);
+    }
     editor.commit();
 
     try {
@@ -1278,8 +1288,10 @@ public class MainActivity extends BaseActivity implements EventListener {
    * 清除内存块中的共享数据
    */
   private void deleteCatch() {
+    Flag.clear();
+
     // 清除密码
-    removePassword();
+    // removePassword();
     StaticVarUtil.list_Rank_xnAndXq.clear();
     StaticVarUtil.allBookList = null;
     RankUtils.allRankArrayList = null;
@@ -1289,8 +1301,7 @@ public class MainActivity extends BaseActivity implements EventListener {
     StaticVarUtil.listItem = null;
     CustomApplcation.getInstance().logout();
     StaticVarUtil.quit();
-   
-
+    StaticVarUtil.student = new Student();
     RankUtils.isFirstListView = true;
     // 清空成绩缓存
     isFirst = true;
@@ -1310,17 +1321,6 @@ public class MainActivity extends BaseActivity implements EventListener {
     recentFragment = null;
     settingFragment = null;
 
-  }
-
-  private void removePassword() {
-    SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
-    Editor editor = preferences.edit();
-    editor.putString(StaticVarUtil.ACCOUNT, StaticVarUtil.student.getAccount());
-    // 删除数据库
-    DBConnection.updateUser(StaticVarUtil.student.getAccount(), MainActivity.this);
-    editor.putString(StaticVarUtil.PASSWORD, "");
-    editor.putBoolean(StaticVarUtil.IS_REMEMBER, true);// 记住密码
-    editor.commit();
   }
 
   @Override
@@ -1914,6 +1914,13 @@ public class MainActivity extends BaseActivity implements EventListener {
   private void chat() {
     // BmobIM SDK初始化--只需要这一段代码即可完成初始化
     // 请到Bmob官网(http://www.bmob.cn/)申请ApplicationId,具体地址:http://docs.bmob.cn/android/faststart/index.html?menukey=fast_start&key=start_android
+    if (Flag.isChat && Flag.arg0 != null) {
+      CustomApplcation.getInstance().setContactList(CollectionUtils.list2map(Flag.arg0));
+      isCanTouch = true;
+      chatHandler.sendEmptyMessageDelayed(GO_HOME, 0);
+      return;
+    }
+    Flag.isChat = true;
     BmobChat.getInstance(this).init(Config.applicationId);
     ProgressDialogUtil.getInstance(MainActivity.this).show();
     if (userManager.getCurrentUser() != null) {
@@ -1973,7 +1980,14 @@ public class MainActivity extends BaseActivity implements EventListener {
 
   private void initTab() {
     contactFragment = new ContactFragment();
-    recentFragment = new RecentFragment();
+    recentFragment = new RecentFragment(new RecentFragment.onClick() {
+
+      @Override
+      public void onClick() {
+        // TODO Auto-generated method stub
+        slidingMenu.toggle();
+      }
+    });
     settingFragment = new SettingsFragment();
     fragments = new Fragment[] { recentFragment, contactFragment, settingFragment };
     // 添加显示第一个fragment

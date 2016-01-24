@@ -45,14 +45,9 @@ public class LoginAsynctask extends AsyncTask<Object, String, String> {
               + URLEncoder.encode(password.trim()) + "&session=" + StaticVarUtil.session
               + "&txtSecretCode=" + txtSecretCode + "&version=" + Util.getVersion(this.mActivity));
     } else {
-      SharedPreferences preferences = mActivity.getSharedPreferences(StaticVarUtil.USER_INFO,
-          mActivity.MODE_PRIVATE);
-      String account = preferences.getString(StaticVarUtil.ACCOUNT, "");
-      String session = preferences.getString(StaticVarUtil.SESSION, "");
       return HttpUtilMc.queryStringForPost(
-          HttpUtilMc.BASE_URL + "mclogin?username=" + account + "&mc=" + session);
+          HttpUtilMc.BASE_URL + "mclogin?username=" + account + "&mc=" + StaticVarUtil.autoData + "&secret=" +StaticVarUtil.autoViewSatte);
     }
-
   }
 
   @Override

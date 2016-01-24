@@ -207,7 +207,8 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
                       map.put("tittle", o.getString("tittle"));
                       StaticVarUtil.listHerf.add(map);
                     }
-
+                    onResult.onReturn("success");
+                    
                     StaticVarUtil.student.setAccount(account.trim());
                     StaticVarUtil.student.setPassword(password.trim());
                     Intent intent = new Intent();

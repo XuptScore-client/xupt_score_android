@@ -56,7 +56,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -77,7 +76,6 @@ public class LoginActivity extends Activity {
 
   private PullDoorView pullDoorView;
   private Handler mHandler;
-  private Bitmap bitmap;
   private String scaletype;
 
   @Override
@@ -87,7 +85,7 @@ public class LoginActivity extends Activity {
     Util.setContext(getApplicationContext());
     Intent i = getIntent();
     String imageMsg = i.getStringExtra("image") != null ? i.getStringExtra("image") : "0|0|0";
-    if (imageMsg.equals("0|0|0") || imageMsg.equals("0|0")) {
+    if (imageMsg != null && imageMsg.equals("0|0|0") || imageMsg.equals("0|0")) {
       super.setContentView(R.layout.activity_login_normal);
     } else {
       super.setContentView(R.layout.activity_login);
@@ -125,7 +123,8 @@ public class LoginActivity extends Activity {
         }
 
         SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
-        String session = preferences.getString(StaticVarUtil.SESSION, "");
+        String session = preferences.getString(account.getText().toString().trim()
+            + password.getText().toString().trim() + StaticVarUtil.SESSION, "");
         if (session != null && !session.isEmpty()) {
           autoLogin();
         } else {
@@ -157,22 +156,31 @@ public class LoginActivity extends Activity {
   }
 
   private void autoLogin() {
-    LoginAsynctask loginAsyntask = new LoginAsynctask(LoginActivity.this, "", "", "",
-        new LoginAsynctask.LoginResult() {
+    SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
+    String session = preferences.getString(account.getText().toString().trim()
+        + password.getText().toString().trim() + StaticVarUtil.SESSION, "");
+    Util.getAutoParmas(getApplicationContext(), session);
+    LoginAsynctask loginAsyntask = new LoginAsynctask(LoginActivity.this,
+        account.getText().toString().trim(), "", "", new LoginAsynctask.LoginResult() {
 
           @Override
           public void onLogin(String result) {
             // TODO Auto-generated method stub
 
+            if (result == null) {
+              login();
+              return;
+            }
             try {
               if (!HttpUtilMc.CONNECT_EXCEPTION.equals(result)) {
                 if (result.equals("error") || result.equals("errorReq")) {
                   ViewUtil.showToast(LoginActivity.this, "证书过期，请重新登录。");
 
-                  // password.setText("");
-                  if (progressDialog != null) {
-                    progressDialog.dismiss();
-                  }
+                  login();
+                  // // password.setText("");
+                  // if (progressDialog != null) {
+                  // progressDialog.dismiss();
+                  // }
                   // progressDialog.cancel();
                 } else {
                   StaticVarUtil.listHerf = new ArrayList<HashMap<String, String>>();
@@ -187,12 +195,17 @@ public class LoginActivity extends Activity {
                   }
                   SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO,
                       MODE_PRIVATE);
-                  String accountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
-                  String sessionStr = preferences.getString(StaticVarUtil.SESSION, "");
-                  String passwordStr = preferences.getString(StaticVarUtil.PASSWORD, "");
-
-                  StaticVarUtil.student.setAccount(accountStr);
-                  StaticVarUtil.student.setPassword(passwordStr);
+                  // String accountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
+                  String sessionStr = preferences.getString(account.getText().toString().trim()
+                      + password.getText().toString().trim() + StaticVarUtil.SESSION, "");
+                  // String passwordStr = preferences.getString(StaticVarUtil.PASSWORD, "");
+                  Editor editor = preferences.edit();
+                  // update sharepreferences data.
+                  editor.putString(StaticVarUtil.ACCOUNT, account.getText().toString().trim());
+                  editor.putString(StaticVarUtil.PASSWORD, password.getText().toString().trim());
+                  editor.commit();
+                  StaticVarUtil.student.setAccount(account.getText().toString().trim());
+                  StaticVarUtil.student.setPassword(password.getText().toString().trim());
                   StaticVarUtil.session = sessionStr;
                   Intent intent = new Intent();
                   intent.setClass(LoginActivity.this, MainActivity.class);
@@ -217,6 +230,7 @@ public class LoginActivity extends Activity {
               if (progressDialog != null) {
                 progressDialog.dismiss();
               }
+              login();
             }
 
           }
@@ -247,7 +261,7 @@ public class LoginActivity extends Activity {
       public void onClick(View arg0) {
         if (Util.isExternalStorageWritable()) {
           BitmapUtil.saveFileAndDB(getApplicationContext(),
-              bitmap != null ? bitmap
+              StaticVarUtil.welcomeBitmap != null ? StaticVarUtil.welcomeBitmap
                   : BitmapFactory.decodeResource(getResources(), R.drawable.left1),
               imageTime + ".jpg");
           ViewUtil.showToast(getApplicationContext(), "保存文件成功");
@@ -267,14 +281,20 @@ public class LoginActivity extends Activity {
       savePic.startAnimation(anim);
       new Thread() {
         public void run() {
-          try {
-            sleep(1500);
-          } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+          if (StaticVarUtil.welcomeBitmap == null) {
+            StaticVarUtil.welcomeBitmap = Util
+                .getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
+            try {
+              sleep(1500);
+            } catch (InterruptedException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            
+            mHandler.post(runnableUi);
+          }else {
+            mHandler.post(runnableUi);
           }
-          bitmap = Util.getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
-          mHandler.post(runnableUi);
         }
       }.start();
     } else {
@@ -282,9 +302,9 @@ public class LoginActivity extends Activity {
       pullDoorView.setBgImage(R.drawable.left1);
     }
 
-    if (bitmap != null) {
-      bitmap.recycle();
-    }
+//    if (StaticVarUtil.welcomeBitmap != null) {
+//      StaticVarUtil.welcomeBitmap.recycle();
+//    }
   }
 
   Runnable runnableUi = new Runnable() {
@@ -292,7 +312,10 @@ public class LoginActivity extends Activity {
     public void run() {
       pullDoorView.setScaletype(
           scaletype.equals("0") ? ImageView.ScaleType.FIT_XY : ImageView.ScaleType.CENTER_CROP);
-      pullDoorView.setBgBitmap(bitmap);
+      if (StaticVarUtil.welcomeBitmap != null) {
+        pullDoorView.setBgBitmap(StaticVarUtil.welcomeBitmap);
+      }
+
       savePic.clearAnimation();
       savePic.setBackgroundResource(R.drawable.picture_down_up);
 
@@ -367,8 +390,9 @@ public class LoginActivity extends Activity {
     if (i == 0) {// 说明没有这个用户，所以得插入
       sqLiteDatabase.insert(UserSchema.TABLE_NAME, null, values);// 插入
     }
-
     editor.putString(StaticVarUtil.PASSWORD, password);
+    editor.putString(account + password + StaticVarUtil.SESSION, StaticVarUtil.session);
+
     editor.putBoolean(StaticVarUtil.IS_REMEMBER, true);// 记住密码
     editor.commit();
   }
@@ -378,8 +402,8 @@ public class LoginActivity extends Activity {
    */
   private void login() {
 
-    String strAccount = account.getText().toString();
-    String strPassword = password.getText().toString();
+    final String strAccount = account.getText().toString();
+    final String strPassword = password.getText().toString();
     try {
       Integer.parseInt(strAccount);
     } catch (Exception e) {
@@ -395,7 +419,6 @@ public class LoginActivity extends Activity {
       ConnectionUtil.setNetworkMethod(LoginActivity.this);
       return;
     }
-    rememberPassword(strAccount, strPassword);
 
     GetPicAsynctask getPicAsyntask = new GetPicAsynctask(LoginActivity.this, strAccount,
         strPassword, progressDialog, new GetPicAsynctask.GetPic() {
@@ -410,6 +433,8 @@ public class LoginActivity extends Activity {
             } else if ("no_user".equals(result)) {
               account.setText("");
               password.setText("");
+            } else if ("success".equals(result)) {
+              rememberPassword(strAccount, strPassword);
             }
           }
         });
@@ -423,15 +448,7 @@ public class LoginActivity extends Activity {
    */
   @SuppressLint("SdCardPath")
   private void findViewById() {
-    if (Util.isExternalStorageWritable()) {
-      StaticVarUtil.PATH = "/sdcard/xuptscore/";// 设置文件目录
-    } else {
-      StaticVarUtil.PATH = "/data/data/com.xy.fy.main/";// 设置文件目录
-    }
 
-    if (!new File(StaticVarUtil.PATH).exists()) {
-      new File(StaticVarUtil.PATH).mkdirs();
-    }
     // this.account = (EditText) findViewById(R.id.etAccount);
     this.photo = (CircleImageView) findViewById(R.id.profile_image);
     this.password = (EditText) findViewById(R.id.etPassword);

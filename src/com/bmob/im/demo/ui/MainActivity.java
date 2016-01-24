@@ -27,6 +27,7 @@ import com.bmob.im.demo.config.BmobConstants;
 import com.bmob.im.demo.ui.fragment.ContactFragment;
 import com.bmob.im.demo.ui.fragment.RecentFragment;
 import com.bmob.im.demo.ui.fragment.SettingsFragment;
+import com.bmob.im.demo.ui.fragment.RecentFragment.onClick;
 import com.xy.fy.main.R;
 
 /**
@@ -81,7 +82,13 @@ public class MainActivity extends ActivityBase implements EventListener {
 
   private void initTab() {
     contactFragment = new ContactFragment();
-    recentFragment = new RecentFragment();
+    recentFragment = new RecentFragment(new onClick() {
+      
+      @Override
+      public void onClick() {
+        // TODO Auto-generated method stub
+      }
+    });
     settingFragment = new SettingsFragment();
     fragments = new Fragment[] { recentFragment, contactFragment, settingFragment };
     // 添加显示第一个fragment

@@ -61,6 +61,10 @@
                     android:layout_height="wrap_content"
                     android:hint="输入验证码"
                     android:textColor="@color/black"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:maxLength="4"
+                    android:focusable="true"
                     android:textCursorDrawable="@null" />
             </LinearLayout>
         </LinearLayout>

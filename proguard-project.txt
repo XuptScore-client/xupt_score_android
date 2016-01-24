@@ -43,8 +43,6 @@
 -keep class com.example.bmobexample.relationaldata.Comment{*;}
 
 -keep class java.lang.reflect.**{*;}
--keep class com.baidu.mapapi.**{*;}
--keep class com.baidu.platform.**{*;}
 -keep class org.apache.commons.mail.**{*;}
 -dontwarn org.apache.commons.mail.**
 -dontwarn org.apache.harmony.awt.**

@@ -110,6 +110,36 @@ public class Util {
       e.printStackTrace();
     }
   }
+  
+  public static void getAutoParmas(Context context, String data) {
+    long time = System.currentTimeMillis();
+    // String s = new char[]{3,2,3,4,3,8,3,8,3,2,3,2}.toString();
+    try {
+      String time_s = Passport.jiami(String.valueOf(time),
+          String.valueOf(new char[] { 2, 4, 8, 8, 2, 2 }));
+      String realData = Passport.jiami(data, String.valueOf(time));
+      String imei = "none";
+      if (context != null) {
+        imei = ((TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE))
+            .getDeviceId();
+        imei = Passport.jiami(imei, String.valueOf(time));
+      }
+
+      String checkData = Util.checkRankRequestData(realData, time_s);
+
+      if (!checkData.equals(data)) {
+        getRequestParmas(context, data);// 递归再次计算，直到计算出正确的
+      }
+      realData = URLEncoder.encode(realData);
+
+      StaticVarUtil.autoData = realData;
+      time_s = URLEncoder.encode(time_s);
+      StaticVarUtil.autoViewSatte = time_s;
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
   public static void getBindLibParmas(Context context, String libName) {
 

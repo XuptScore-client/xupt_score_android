@@ -56,8 +56,45 @@ android.support.v4.app.BackStackRecord:
     783:783:public int getTransitionStyle()
     787:787:public boolean isEmpty()
 android.support.v4.app.DialogFragment
-android.support.v4.app.Fragment$SavedState:
-    301:303:Fragment$SavedState(android.os.Bundle)
+android.support.v4.app.Fragment:
+    static final int INITIALIZING
+    static final int CREATED
+    static final int ACTIVITY_CREATED
+    static final int STOPPED
+    static final int STARTED
+    static final int RESUMED
+    481:481:public final int getId()
+    488:488:public final java.lang.String getTag()
+    499:503:public void setArguments(android.os.Bundle)
+    510:510:public final android.os.Bundle getArguments()
+    522:527:public void setInitialSavedState(android.support.v4.app.Fragment$SavedState)
+    541:543:public void setTargetFragment(android.support.v4.app.Fragment,int)
+    549:549:public final android.support.v4.app.Fragment getTargetFragment()
+    556:556:public final int getTargetRequestCode()
+    583:583:public final java.lang.CharSequence getText(int)
+    593:593:public final java.lang.String getString(int)
+    606:606:public final varargs java.lang.String getString(int,java.lang.Object[])
+    620:620:public final android.support.v4.app.FragmentManager getFragmentManager()
+    628:640:public final android.support.v4.app.FragmentManager getChildFragmentManager()
+    648:648:public final android.support.v4.app.Fragment getParentFragment()
+    664:664:public final boolean isDetached()
+    673:673:public final boolean isRemoving()
+    684:684:public final boolean isInLayout()
+    692:692:public final boolean isResumed()
+    701:701:public final boolean isVisible()
+    713:713:public final boolean isHidden()
+    749:749:public final boolean getRetainInstance()
+    760:766:public void setHasOptionsMenu(boolean)
+    778:784:public void setMenuVisibility(boolean)
+    800:805:public void setUserVisibleHint(boolean)
+    812:812:public boolean getUserVisibleHint()
+    819:827:public android.support.v4.app.LoaderManager getLoaderManager()
+    846:850:public void startActivityForResult(android.content.Intent,int)
+    1288:1289:public void registerForContextMenu(android.view.View)
+    1299:1300:public void unregisterForContextMenu(android.view.View)
+    1410:1416:android.support.v4.app.Fragment findFragmentByWho(java.lang.String)
+android.support.v4.app.Fragment$SavedState
+android.support.v4.app.Fragment$SavedState$1
 android.support.v4.app.FragmentActivity:
     private static final java.lang.String TAG
     static final java.lang.String FRAGMENTS_TAG
@@ -116,6 +153,7 @@ android.support.v4.app.FragmentManagerImpl:
     530:534:public void addOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
     538:541:public void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
     572:580:public android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment)
+    1314:1322:public android.support.v4.app.Fragment findFragmentByWho(java.lang.String)
 android.support.v4.app.FragmentManagerImpl$2
 android.support.v4.app.FragmentManagerImpl$3
 android.support.v4.app.FragmentManagerImpl$4
@@ -1912,480 +1950,6 @@ com.b.a.i:
     private static final long serialVersionUID
 com.b.a.is:
     private static final long serialVersionUID
-com.baidu.lbsapi.auth.ErrorMessage:
-    ErrorMessage()
-com.baidu.location.BDErrorReport:
-    private java.lang.String a
-    public BDErrorReport()
-    public BDErrorReport(com.baidu.location.BDErrorReport)
-    public int setErrorInfo(boolean,double,double,boolean,java.lang.String,double,double,java.lang.String,java.lang.String)
-    public android.os.Bundle getErrorInfo()
-com.baidu.location.BDGeofence
-com.baidu.location.BDGeofence$Builder
-com.baidu.location.BDLocation:
-    public static final int TypeNone
-    public static final int TypeGpsLocation
-    public static final int TypeCriteriaException
-    public static final int TypeNetWorkException
-    public static final int TypeOffLineLocation
-    public static final int TypeOffLineLocationFail
-    public static final int TypeOffLineLocationNetworkFail
-    public static final int TypeNetWorkLocation
-    public static final int TypeCacheLocation
-    public static final int TypeServerError
-    public static final int OPERATORS_TYPE_UNKONW
-    public static final int OPERATORS_TYPE_MOBILE
-    public static final int OPERATORS_TYPE_UNICOM
-    public static final int OPERATORS_TYPE_TELECOMU
-    protected java.lang.String bm()
-    public boolean isCellChangeFlag()
-    public double getAltitude()
-    public void setAltitude(double)
-    public float getSpeed()
-    public java.lang.String getCoorType()
-    public void setCoorType(java.lang.String)
-    public boolean hasAltitude()
-    public boolean hasSpeed()
-    public boolean hasRadius()
-    protected com.baidu.location.BDLocation p(java.lang.String)
-    public int getSatelliteNumber()
-    public float getDirection()
-    public boolean hasSateNumber()
-    public boolean hasAddr()
-    public java.lang.String getProvince()
-    public java.lang.String getCity()
-    public java.lang.String getCityCode()
-    public java.lang.String getDistrict()
-    public java.lang.String getStreet()
-    public java.lang.String getStreetNumber()
-    public java.lang.String getFloor()
-    public int getOperators()
-    private java.lang.String bn()
-    public java.lang.String getAdUrl(java.lang.String)
-    private static java.lang.String bo()
-com.baidu.location.BDLocationStatusCodes
-com.baidu.location.BDNotifyListener:
-    public void SetNotifyLocation(double,double,float,java.lang.String)
-com.baidu.location.CommonEncrypt
-com.baidu.location.GeofenceClient:
-    private static final int bj
-    public static final java.lang.String BUNDLE_FOR_GEOFENCE_ID
-    private android.content.Context bf
-    private boolean bl
-    private android.os.Messenger bk
-    private com.baidu.location.GeofenceClient$a bm
-    private android.os.Messenger bi
-    private com.baidu.location.GeofenceClient$OnGeofenceTriggerListener bg
-    private android.content.ServiceConnection bh
-    public GeofenceClient(android.content.Context)
-    public void start()
-    private void void()
-    public void setInterval(long)
-    public boolean isStarted()
-    public void registerGeofenceTriggerListener(com.baidu.location.GeofenceClient$OnGeofenceTriggerListener)
-    public void addBDGeofence(com.baidu.location.BDGeofence,com.baidu.location.GeofenceClient$OnAddBDGeofencesResultListener)
-    public void removeBDGeofences(java.util.List,com.baidu.location.GeofenceClient$OnRemoveBDGeofencesResultListener)
-    private void for(java.lang.String)
-    private void int(java.lang.String)
-    public void startGeofenceScann()
-    public void stop()
-    private void long()
-    static synthetic android.os.Messenger if(com.baidu.location.GeofenceClient,android.os.Messenger)
-    static synthetic android.os.Messenger if(com.baidu.location.GeofenceClient)
-    static synthetic boolean if(com.baidu.location.GeofenceClient,boolean)
-    static synthetic void do(com.baidu.location.GeofenceClient,java.lang.String)
-    static synthetic void do(com.baidu.location.GeofenceClient)
-    static synthetic void if(com.baidu.location.GeofenceClient,java.lang.String)
-com.baidu.location.GeofenceClient$1
-com.baidu.location.GeofenceClient$OnGeofenceTriggerListener
-com.baidu.location.GeofenceClient$a
-com.baidu.location.Jni:
-    Jni()
-    private static native java.lang.String g(byte[])
-    private static native void f(byte[],byte[])
-    public static void int(java.lang.String,java.lang.String)
-    public static java.lang.String k(java.lang.String)
-com.baidu.location.LocationClient:
-    private static final java.lang.String jq
-    private static final int jt
-    private static final int jS
-    private static final int jB
-    private static final int j4
-    private static final int jO
-    private static final int jR
-    private static final int jH
-    private static final int jC
-    private static final int jF
-    private static final int jo
-    private static final int j1
-    private static final int jP
-    private static final int jx
-    public LocationClient(android.content.Context,com.baidu.location.LocationClientOption)
-    public com.baidu.location.LocationClientOption getLocOption()
-    public boolean updateLocation(android.location.Location)
-    public int requestOfflineLocation()
-    public com.baidu.location.BDLocation getLastKnownLocation()
-    public java.lang.String getVersion()
-    public void registerNotify(com.baidu.location.BDNotifyListener)
-    public void removeNotifyEvent(com.baidu.location.BDNotifyListener)
-    private android.os.Bundle cw()
-    public void unRegisterLocationListener(com.baidu.location.BDLocationListener)
-    public void setForBaiduMap(boolean)
-    public void setDebug(boolean)
-    public boolean notifyError()
-    public int reportErrorWithInfo(com.baidu.location.BDErrorReport)
-    public void cancleError()
-    private boolean else(int)
-    static synthetic java.lang.Boolean if(com.baidu.location.LocationClient,java.lang.Boolean)
-com.baidu.location.LocationClientOption:
-    public static final int MIN_SCAN_SPAN
-    public static final int MIN_SCAN_SPAN_NETWORK
-    protected static final int byte
-    protected static final int void
-    protected static final int try
-    public java.lang.String getCoorType()
-    public java.lang.String getAddrType()
-    public boolean isOpenGps()
-    public boolean isLocationNotify()
-    public void setLocationNotify(boolean)
-    public int getScanSpan()
-    public int getTimeOut()
-    public void setTimeOut(int)
-    public java.lang.String getProdName()
-    public void setNeedDeviceDirect(boolean)
-    public void SetIgnoreCacheException(boolean)
-com.baidu.location.a
-com.baidu.location.a.a
-com.baidu.location.a.b
-com.baidu.location.a0:
-    private static final int iT
-    private static final int jb
-    private static final int iU
-    private static final int jd
-    public static final long i2
-    private static final int iW
-    public static final java.lang.String ji
-    private static final java.lang.String ja
-    private static final java.lang.String jk
-    private static final java.lang.String i4
-    private static final java.lang.String jh
-    private static final java.lang.String iR
-    private static final java.lang.String iZ
-    public void new(android.content.Context)
-com.baidu.location.a0$a:
-    private static final java.lang.String dQ
-    private static final java.lang.String dT
-    private static final java.lang.String dS
-    private static final java.lang.String dU
-    private static final java.lang.String dW
-com.baidu.location.ac
-com.baidu.location.ad
-com.baidu.location.ad$1
-com.baidu.location.ad$2
-com.baidu.location.ad$3
-com.baidu.location.ad$a
-com.baidu.location.ad$b
-com.baidu.location.ah:
-    private boolean au()
-    public void for(com.baidu.location.BDLocation)
-com.baidu.location.ai:
-    static synthetic boolean if(com.baidu.location.ai,boolean)
-    static synthetic boolean do(com.baidu.location.ai)
-    static synthetic android.os.Handler if(com.baidu.location.ai)
-com.baidu.location.ai$2
-com.baidu.location.aj
-com.baidu.location.aj$1
-com.baidu.location.aj$2
-com.baidu.location.al
-com.baidu.location.am
-com.baidu.location.am$a
-com.baidu.location.an
-com.baidu.location.ao:
-    ao()
-com.baidu.location.ap
-com.baidu.location.aq:
-    private static final int d
-    private static final long void
-    public static final int int
-    private static final int e
-    private static final java.lang.String for
-    private static final java.lang.String byte
-    private static final int else
-    private static final int case
-    private static final int i
-    private long h
-    public long goto()
-    public boolean byte()
-    public long else()
-    public void a(long)
-    public int new()
-com.baidu.location.ar:
-    private static final int hN
-    public static double if(com.baidu.location.ar$b,com.baidu.location.ar$b)
-com.baidu.location.ar$b:
-    public ar$b(com.baidu.location.ar,com.baidu.location.ar$b)
-com.baidu.location.as:
-    public boolean do(com.baidu.location.ar$b)
-    public int try(com.baidu.location.BDLocation)
-com.baidu.location.at:
-    public int cX()
-    public java.lang.String cU()
-com.baidu.location.au:
-    public static final int h4
-    private static final java.lang.String i
-    private static final java.lang.String h2
-    private static final java.lang.String h5
-    private static final java.lang.String h7
-    private static final java.lang.String h9
-    private static final java.lang.String h6
-    private static final java.lang.String ih
-    private static final int ie
-    private static final int id
-    private static final int h3
-    private static final int ic
-    public void if(com.baidu.location.aq,com.baidu.location.GeofenceClient$OnAddBDGeofencesResultListener)
-    public void if(java.util.List,com.baidu.location.GeofenceClient$OnRemoveBDGeofencesResultListener)
-    private synchronized long cc()
-    private void ca()
-    private final void cb()
-    private synchronized int if(com.baidu.location.aq,java.lang.String)
-    private synchronized int do(java.util.List)
-    private void if(com.baidu.location.GeofenceClient$OnAddBDGeofencesResultListener,int,java.lang.String)
-    static synthetic android.content.Context if(com.baidu.location.au)
-    static synthetic void if(com.baidu.location.au,com.baidu.location.GeofenceClient$OnAddBDGeofencesResultListener,int,java.lang.String)
-    static synthetic com.baidu.location.au$a do(com.baidu.location.au)
-    static synthetic int if(com.baidu.location.au,com.baidu.location.aq,java.lang.String)
-    static synthetic int if(com.baidu.location.au,java.util.List)
-com.baidu.location.au$a:
-    public static final int if
-    public static final int do
-    public static final int for
-com.baidu.location.au$b
-com.baidu.location.au$c
-com.baidu.location.au$d
-com.baidu.location.av
-com.baidu.location.aw:
-    public boolean int()
-com.baidu.location.ax:
-    public static final java.lang.String i
-    public static final int F
-    public static final int byte
-    public static final int for
-    public static final int k
-    public static final int r
-    public static final int O
-    public static final int d
-    public static final int L
-    public static final int Q
-    public static final int else
-    public static final int E
-    public static final int goto
-    public static final int q
-    public static final int K
-    public static final int G
-    public static final int o
-    public static final int void
-    public static final int do
-    public static final int char
-    public static final int p
-    public static final int n
-    public static final int h
-    public static final int x
-    public static final int e
-    public static final int case
-    public static final int C
-    public static final int f
-    public static final int D
-    public static final int A
-    public static final int B
-    public static final int z
-    public static final int m
-    public static final int M
-    public static final int u
-    public static final int s
-    public static final int N
-    public static final int H
-    public static final int w
-    public static final int y
-    public static final int v
-    public static final int try
-    public static final int l
-    public static final int g
-    public static final int int
-    public static final int t
-    public static final int long
-    public static final int if
-    public static final int b
-    public static final int P
-    public static final int j
-    public static final int J
-    public static final int new
-    public static final int c
-com.baidu.location.ay:
-    public void ch()
-com.baidu.location.az:
-    private android.hardware.Sensor iO
-    public java.lang.String co()
-    public java.lang.String cl()
-    public java.lang.String s(java.lang.String)
-com.baidu.location.b
-com.baidu.location.b.a.a:
-    private static final boolean a
-com.baidu.location.b.a.b:
-    private static final java.lang.String do
-    private static final boolean a
-    private static final java.lang.String int
-    private static final java.lang.String for
-    private static final java.lang.String if
-    private b()
-com.baidu.location.b.a.b$a:
-    private static final java.lang.String do
-com.baidu.location.b.a.c:
-    private c()
-com.baidu.location.b.b.a:
-    private static final java.lang.String if
-    private static final java.lang.String a
-    private a()
-com.baidu.location.b.b.b:
-    private b()
-com.baidu.location.c:
-    public static final boolean aG
-    c()
-    static float if(java.lang.String,java.lang.String,java.lang.String)
-    static double for(java.lang.String,java.lang.String,java.lang.String)
-    static java.lang.String if(java.lang.String,java.lang.String,java.lang.String,double)
-    static java.lang.String if()
-    public static void if(java.lang.String)
-    public static void do(java.lang.String)
-    public static java.lang.String do()
-    public static java.lang.String byte()
-    public static java.lang.String else()
-com.baidu.location.f:
-    private static final java.lang.String ij
-com.baidu.location.i:
-    i()
-com.baidu.location.k:
-    public boolean k()
-    public void i()
-com.baidu.location.k$a:
-    public void a()
-com.baidu.location.l:
-    private java.lang.String bG
-    private static final int bK
-    private static final int bW
-    private static final int b5
-    private final long by
-    private final int b1
-    private long bX
-    private long[] bC
-    private int bH
-    private com.baidu.location.t$a bR
-    public static final java.lang.String bM
-    private java.lang.String bN
-    private int b3
-    private boolean bF
-    private boolean bP
-    private boolean b4
-    private final int bT
-    private long bS
-    private int b2
-    private long bQ
-    private long bO
-    com.baidu.location.l$c bx
-    java.lang.String bU
-    public l(android.content.Context)
-    void v()
-    private void if(boolean)
-    private void t()
-    public static void q()
-    public boolean r()
-    boolean if(double,double)
-com.baidu.location.l$1
-com.baidu.location.l$a:
-    public l$a(com.baidu.location.l)
-com.baidu.location.l$b
-com.baidu.location.l$c
-com.baidu.location.m:
-    private static final java.lang.String do
-    private static final int if
-com.baidu.location.n
-com.baidu.location.o
-com.baidu.location.o$1
-com.baidu.location.o$a
-com.baidu.location.p
-com.baidu.location.q:
-    private static final int ca
-    private static final int cb
-    private static final int cG
-    private static final int cp
-    private static final int cr
-    private static final int cj
-    public static void if(double,double,double,double)
-    public void z()
-    public void A()
-    public static void if(java.lang.String,int)
-    public static void if(java.lang.String,int,boolean)
-    public static void if(int,int)
-    public static void if(int,int,boolean)
-    public static void C()
-    public static void F()
-com.baidu.location.s:
-    public void R()
-    public static boolean if(android.content.Context)
-com.baidu.location.s$3
-com.baidu.location.t:
-    public java.lang.String ao()
-com.baidu.location.t$a:
-    public t$a(com.baidu.location.t,int,int,int,int,char)
-com.baidu.location.u:
-    static final int eE
-com.baidu.location.v:
-    v()
-com.baidu.location.v$a:
-    v$a()
-com.baidu.location.w:
-    private static final int eI
-    private static final int eR
-    private static final int eZ
-    private static final int e2
-    private static final int eY
-    private static final int e0
-    private static final int eK
-    private static final int eM
-    private void aL()
-    public void aO()
-    private boolean aN()
-    private void aI()
-com.baidu.location.x:
-    private static final int fH
-    private static final int fM
-    private static final int fC
-    private static final int fs
-    private static final double fq
-    private static final int fJ
-    private static final int fV
-    private android.location.Location fm
-    private android.location.Location fy
-    private long fK
-    private long fx
-    public java.lang.String aV()
-    private boolean aQ()
-    private void try(android.location.Location)
-com.baidu.location.y:
-    private static final int f7
-com.baidu.location.z:
-    public static final java.lang.String gi
-    public void if(com.baidu.location.BDNotifyListener)
-com.baidu.location.z$a:
-    public void a(com.baidu.location.BDLocation)
-com.baidu.vi.VDeviceAPI
-com.baidu.vi.VMsg:
-    private static void postMessage(int,int,int,int)
-com.baidu.vi.a
-com.baidu.vi.b:
-    public static android.content.Context a()
-com.baidu.vi.c
-com.baidu.vi.c$1
 com.bmob.BTPFileResponse:
     33:33:public boolean isReadable()
     41:41:public boolean isWriteable()
@@ -2488,7 +2052,7 @@ com.bmob.d.a.Though:
     private static final long serialVersionUID
 com.bmob.im.demo.CustomApplcation:
     public static final java.lang.String PREFERENCE_NAME
-    166:168:public android.app.NotificationManager getNotificationManager()
+    108:110:public android.app.NotificationManager getNotificationManager()
 com.bmob.im.demo.MyMessageReceiver:
     public static final int NOTIFY_ID
 com.bmob.im.demo.adapter.NearPeopleAdapter:
@@ -2513,6 +2077,8 @@ com.bmob.im.demo.config.BmobConstants:
     14:14:public BmobConstants()
 com.bmob.im.demo.config.Config:
     9:9:public Config()
+com.bmob.im.demo.ui.BaseActivity:
+    143:148:public void initTopBarForBoth(java.lang.String,int,java.lang.String,com.bmob.im.demo.view.HeaderLayout$onRightImageButtonClickListener)
 com.bmob.im.demo.ui.ChatActivity:
     public static final int NEW_MESSAGE
 com.bmob.im.demo.ui.FragmentBase:
@@ -2523,11 +2089,8 @@ com.bmob.im.demo.ui.FragmentBase:
     94:95:public void ShowLog(java.lang.String)
     122:129:public void initTopBarForBoth(java.lang.String,int,com.bmob.im.demo.view.HeaderLayout$onRightImageButtonClickListener)
     137:142:public void initTopBarForLeft(java.lang.String)
-com.bmob.im.demo.ui.FragmentBase$OnLeftButtonClickListener
 com.bmob.im.demo.ui.ImageBrowserActivity:
     android.widget.LinearLayout layout_image
-com.bmob.im.demo.ui.LocationActivity:
-    com.baidu.mapapi.map.BitmapDescriptor mCurrentMarker
 com.bmob.im.demo.ui.MainActivity:
     private static long firstTime
 com.bmob.im.demo.ui.SetMyInfoActivity:
@@ -2541,6 +2104,7 @@ com.bmob.im.demo.ui.SetMyInfoActivity:
     java.lang.String path
 com.bmob.im.demo.ui.fragment.ContactFragment:
     android.widget.TextView tv_new_name
+    291:295:public void setUserVisibleHint(boolean)
 com.bmob.im.demo.util.CharacterParser:
     private java.lang.String resource
     70:70:public java.lang.String getResource()
@@ -2597,6 +2161,8 @@ com.bmob.im.demo.view.CustomGridView
 com.bmob.im.demo.view.CustomViewPager:
     47:49:public void setAdapter(android.support.v4.view.PagerAdapter,int)
 com.bmob.im.demo.view.EmoticonsTextView
+com.bmob.im.demo.view.HeaderLayout:
+    162:171:public void setTitleAndRightButton(java.lang.CharSequence,int,java.lang.String,com.bmob.im.demo.view.HeaderLayout$onRightImageButtonClickListener)
 com.bmob.im.demo.view.dialog.DialogBase:
     45:45:public boolean isCancel()
     193:193:protected android.view.View$OnFocusChangeListener GetOnFocusChangeListener()
@@ -2783,6 +2349,7 @@ com.mc.db.DBConnection:
     private static final java.lang.String DATABASE_NAME
     private static final int DATABASE_VERSION
     108:114:public static void deleteUser(java.lang.String,android.content.Context)
+    123:131:public static void updateUser(java.lang.String,android.content.Context)
 com.mc.db.DBConnection$LanguageSchema
 com.mc.db.DBConnection$UserSchema
 com.mc.fragment.BindLibFragment
@@ -2932,7 +2499,7 @@ com.mc.util.Util:
     public static final java.lang.String LOGINFILE
     public static final int CHANGE_PWD_RESULT
     49:49:public Util()
-    493:506:public static void uploadLoginMsg(android.content.Context)
+    523:536:public static void uploadLoginMsg(android.content.Context)
 com.mc.util.Util$1
 com.mc.util.VersionUpdate:
     private static final int DOWN_UPDATE
@@ -3541,7 +3108,7 @@ com.xy.fy.main.R$raw
 com.xy.fy.main.R$string
 com.xy.fy.main.R$style
 com.xy.fy.main.R$styleable:
-    3270:3270:public R$styleable()
+    3268:3268:public R$styleable()
 com.xy.fy.singleton.Comment
 com.xy.fy.singleton.Message:
     3:3:public Message()
@@ -3619,6 +3186,8 @@ com.xy.fy.util.FileUtils:
     571:587:public static final java.lang.String read(java.lang.String)
     591:609:public static final java.lang.String read(java.io.InputStream)
     613:621:public static java.lang.String getLastModified(java.lang.String)
+com.xy.fy.util.Flag:
+    7:7:public Flag()
 com.xy.fy.util.H5SecurityUtil
 com.xy.fy.util.OpenFileDialog:
     public static final java.lang.String sRoot
@@ -3664,17 +3233,18 @@ com.xy.fy.util.StaticVarUtil:
     public static final java.lang.String PASSWORD
     public static final java.lang.String USER_INFO
     public static final java.lang.String IS_REMEMBER
+    public static final java.lang.String SESSION
     public static final java.lang.String LANGUAGE_INFO
     public static final java.lang.String LANGUAGE
-    30:30:public StaticVarUtil()
-    142:152:public static com.xy.fy.singleton.Student parseJsonToStudent(java.lang.String)
-    172:194:public static com.xy.fy.singleton.Message getItemMessage(java.lang.String)
-    204:217:public static java.util.ArrayList getAllMessage(java.lang.String)
-    226:231:public static void collect(int,android.content.Context)
-    241:246:public static boolean isCollect(int,android.content.Context)
-    257:263:public static boolean isPraised(int,android.content.Context)
-    272:277:public static void praise(int,android.content.Context)
-    286:302:public static java.util.ArrayList getAllComments(java.lang.String)
+    33:33:public StaticVarUtil()
+    161:171:public static com.xy.fy.singleton.Student parseJsonToStudent(java.lang.String)
+    191:213:public static com.xy.fy.singleton.Message getItemMessage(java.lang.String)
+    223:236:public static java.util.ArrayList getAllMessage(java.lang.String)
+    245:250:public static void collect(int,android.content.Context)
+    260:265:public static boolean isCollect(int,android.content.Context)
+    276:282:public static boolean isPraised(int,android.content.Context)
+    291:296:public static void praise(int,android.content.Context)
+    305:321:public static java.util.ArrayList getAllComments(java.lang.String)
 com.xy.fy.util.ViewUtil:
     19:19:public ViewUtil()
     57:76:public static void showDialog(java.lang.String,java.lang.String,android.app.Activity,boolean)
@@ -3750,6 +3320,3 @@ uk.co.senab.photoview.log.LoggerDefault:
     62:62:public int w(java.lang.String,java.lang.String,java.lang.Throwable)
     67:67:public int e(java.lang.String,java.lang.String)
     72:72:public int e(java.lang.String,java.lang.String,java.lang.Throwable)
-vi.com.gdi.bgl.android.java.EnvDrawText:
-    public static synchronized int[] drawText(java.lang.String,int,int,int[],int,int,int,int)
-    public static short[] getTextSize(java.lang.String,int)
