@@ -43,10 +43,11 @@ public class LoginAsynctask extends AsyncTask<Object, String, String> {
       return HttpUtilMc.queryStringForPost(
           HttpUtilMc.BASE_URL + "login.jsp?username=" + account.trim() + "&password="
               + URLEncoder.encode(password.trim()) + "&session=" + StaticVarUtil.session
-              + "&txtSecretCode=" + txtSecretCode + "&version=" + Util.getVersion(this.mActivity));
+              + (txtSecretCode.isEmpty() ? "" : ("&txtSecretCode=" + txtSecretCode)) + "&version="
+              + Util.getVersion(this.mActivity));
     } else {
-      return HttpUtilMc.queryStringForPost(
-          HttpUtilMc.BASE_URL + "mclogin?username=" + account + "&mc=" + StaticVarUtil.autoData + "&secret=" +StaticVarUtil.autoViewSatte);
+      return HttpUtilMc.queryStringForPost(HttpUtilMc.BASE_URL + "mclogin?username=" + account
+          + "&mc=" + StaticVarUtil.autoData + "&secret=" + StaticVarUtil.autoViewSatte);
     }
   }
 

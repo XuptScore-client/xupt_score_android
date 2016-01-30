@@ -2499,6 +2499,7 @@ com.mc.util.Util:
     public static final java.lang.String LOGINFILE
     public static final int CHANGE_PWD_RESULT
     49:49:public Util()
+    115:142:public static void getAutoParmas(android.content.Context,java.lang.String)
     523:536:public static void uploadLoginMsg(android.content.Context)
 com.mc.util.Util$1
 com.mc.util.VersionUpdate:
@@ -3082,6 +3083,10 @@ com.xy.fy.adapter.CommentAdapter$ViewHolder
 com.xy.fy.asynctask.RenewLibAsynctask:
     51:52:private void ShowLibMessage(com.xy.fy.adapter.LibAdapter)
 com.xy.fy.main.BuildConfig
+com.xy.fy.main.LoginActivity:
+    159:240:private void autoLogin()
+    71:71:static synthetic android.app.ProgressDialog access$6(com.xy.fy.main.LoginActivity)
+com.xy.fy.main.LoginActivity$5
 com.xy.fy.main.MainActivity:
     private static final java.lang.String TAG
     private static final int PIC

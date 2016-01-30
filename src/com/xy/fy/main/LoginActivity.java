@@ -122,14 +122,14 @@ public class LoginActivity extends Activity {
           return;
         }
 
-        SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
-        String session = preferences.getString(account.getText().toString().trim()
-            + password.getText().toString().trim() + StaticVarUtil.SESSION, "");
-        if (session != null && !session.isEmpty()) {
-          autoLogin();
-        } else {
+//        SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
+//        String session = preferences.getString(account.getText().toString().trim()
+//            + password.getText().toString().trim() + StaticVarUtil.SESSION, "");
+//        if (session != null && !session.isEmpty()) {
+//          autoLogin();
+//        } else {
           login();
-        }
+//        }
         // H5Toast.showToast(getApplicationContext(), "Õ¯¬Á≤ªŒ»∂®£¨«Î…‘∫Û°£");
         // Intent intent = new Intent();
         // intent.setClass(LoginActivity.this, MainActivity.class);

@@ -53,7 +53,7 @@
 		-->
     
 	<ShareSDK 
-		AppKey = "5ba3ab34c34c"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
+		AppKey = "a256bb50e018"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
     
 	<!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
 	<SinaWeibo

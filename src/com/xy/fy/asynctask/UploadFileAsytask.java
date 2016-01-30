@@ -34,7 +34,7 @@ public class UploadFileAsytask extends AsyncTask<String, String, String> {
   protected void onPostExecute(String result) {
     // TODO Auto-generated method stub
     try {
-      if (result.equals("error")) {
+      if (result.equals("error") || bitmap == null) {
         return;
       }
       if (Util.isExternalStorageWritable()) {

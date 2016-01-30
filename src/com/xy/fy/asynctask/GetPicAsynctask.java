@@ -52,7 +52,7 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
     StaticVarUtil.loginTimes++;
     // TODO Auto-generated method stub
     return HttpUtilMc.IsReachIP()
-        ? HttpUtilMc.queryStringForPost(HttpUtilMc.BASE_URL + "GetPic.jsp")
+        ? HttpUtilMc.queryStringForPost(HttpUtilMc.BASE_URL + "GetPic.jsp?isCheck=true")
         : HttpUtilMc.CONNECT_EXCEPTION;
   }
 
@@ -69,6 +69,10 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
             final String session = json.getString("cookieSessionID");// session
             String picUrl = json.getString("picurl");
             System.out.println("picUrl:" + picUrl);
+            if (picUrl.isEmpty()) {
+              request(session, "");
+              return;
+            }
             final H5Dialog h5Dialog = new H5Dialog(this.mActivity);
             // sync image.
             GetImageSync getImageSync = new GetImageSync(picUrl, new GetImageSync.syncLintener() {
@@ -99,14 +103,14 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
                       }
                     }
                     if (h5Dialog.getPic().length() != 4) {
-                        H5Toast.showToast(mActivity, "验证码错误");
-                        if (progressDialog != null) {
-                          try {
-                            progressDialog.dismiss();
-                          } catch (Exception e) {
-                            // TODO: handle exception
-                          }
+                      H5Toast.showToast(mActivity, "验证码错误");
+                      if (progressDialog != null) {
+                        try {
+                          progressDialog.dismiss();
+                        } catch (Exception e) {
+                          // TODO: handle exception
                         }
+                      }
                     } else {
                       request(session, h5Dialog.getPic());
                     }
@@ -208,7 +212,7 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
                       StaticVarUtil.listHerf.add(map);
                     }
                     onResult.onReturn("success");
-                    
+
                     StaticVarUtil.student.setAccount(account.trim());
                     StaticVarUtil.student.setPassword(password.trim());
                     Intent intent = new Intent();
@@ -230,7 +234,7 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
                 // 重新登录
                 if (StaticVarUtil.loginTimes < 3) {
                   LoginAsynctask loginAsyntask = new LoginAsynctask(mActivity, account, password,
-                      pic, this, progressDialog,false);
+                      pic, this, progressDialog, false);
                   ViewUtil.showToast(mActivity, HttpUtilMc.CONNECT_REPEAT_EXCEPTION);
                   loginAsyntask.execute();
                 } else {
@@ -251,7 +255,7 @@ public class GetPicAsynctask extends AsyncTask<Object, String, String> {
             }
 
           }
-        }, progressDialog,false);
+        }, progressDialog, false);
     loginAsyntask.execute();
   }
 }

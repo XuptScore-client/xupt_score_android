@@ -10,6 +10,7 @@ import com.mc.util.CrashHandler;
 import com.mc.util.H5Log;
 import com.mc.util.HttpUtilMc;
 import com.mc.util.Util;
+import com.xy.fy.asynctask.GetPicAsynctask;
 import com.xy.fy.asynctask.LoginAsynctask;
 import com.xy.fy.util.ConnectionUtil;
 import com.xy.fy.util.StaticVarUtil;
@@ -29,6 +30,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -100,23 +102,23 @@ public class WelcomeActivity extends Activity {
     setContentView(view);
     welcome = (ImageView) findViewById(R.id.welcome);
     AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-    aa.setDuration(3000);
+    aa.setDuration(5000);
     view.startAnimation(aa);
 
     aa.setAnimationListener(new AnimationListener() {
       @Override
       public void onAnimationEnd(Animation arg0) {
-        SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
-        String acount = preferences.getString(StaticVarUtil.ACCOUNT, "");
-        String pass = preferences.getString(StaticVarUtil.PASSWORD, "");
-        String session = preferences.getString(acount + pass + StaticVarUtil.SESSION, "");
-        if (session != null && !session.isEmpty()) {
+//        SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO, MODE_PRIVATE);
+//        String acount = preferences.getString(StaticVarUtil.ACCOUNT, "");
+//        String pass = preferences.getString(StaticVarUtil.PASSWORD, "");
+//        String session = preferences.getString(acount + pass + StaticVarUtil.SESSION, "");
+//        if (session != null && !session.isEmpty()) {
           System.out.println("autoLogin");
           autoLogin();
-        } else {
-          GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
-          getImageMsgAsytask.execute();
-        }
+//        } else {
+//          GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+//          getImageMsgAsytask.execute();
+//        }
 
       }
 
@@ -137,15 +139,15 @@ public class WelcomeActivity extends Activity {
   Runnable runnableUi = new Runnable() {
     @Override
     public void run() {
-      if(StaticVarUtil.welcomeBitmap != null){
+      if (StaticVarUtil.welcomeBitmap != null) {
         try {
           welcome.setBackground(new BitmapDrawable(StaticVarUtil.welcomeBitmap));
         } catch (NoSuchFieldError e) {
           // TODO: handle exception
         }
-       
+
       }
-      }
+    }
   };
 
   class GetImageMsgAsytask extends AsyncTask<String, String, String> {
@@ -188,7 +190,8 @@ public class WelcomeActivity extends Activity {
                   // TODO Auto-generated catch block
                   e.printStackTrace();
                 }
-                StaticVarUtil.welcomeBitmap = Util.getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
+                StaticVarUtil.welcomeBitmap = Util
+                    .getBitmap(HttpUtilMc.BASE_URL + "image/" + imageTime + ".jpg");
                 mHandler.post(runnableUi);
               }
             }.start();
@@ -216,67 +219,85 @@ public class WelcomeActivity extends Activity {
     String passStr = preferences.getString(StaticVarUtil.PASSWORD, "");
     String session = preferences.getString(acountStr + passStr + StaticVarUtil.SESSION, "");
 
-    Util.getAutoParmas(getApplicationContext(), session);
-    LoginAsynctask loginAsyntask = new LoginAsynctask(WelcomeActivity.this, acountStr, "", "",
-        new LoginAsynctask.LoginResult() {
+    GetPicAsynctask getPicAsyntask = new GetPicAsynctask(WelcomeActivity.this, acountStr, passStr,
+        null, new GetPicAsynctask.GetPic() {
 
           @Override
-          public void onLogin(String result) {
+          public void onReturn(String result) {
             // TODO Auto-generated method stub
 
-            if (result == null) {
+            if ("error".equals(result) || HttpUtilMc.CONNECT_EXCEPTION.equals(result)) {
+              // password.setText("");
+              // password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
               GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
               getImageMsgAsytask.execute();
               return;
             }
-            try {
-              if (!HttpUtilMc.CONNECT_EXCEPTION.equals(result)) {
-                if (result.equals("error") || result.equals("errorReq")) {
-                  ViewUtil.showToast(WelcomeActivity.this, "证书过期，请重新登录。");
-                  GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
-                  getImageMsgAsytask.execute();
-                  // progressDialog.cancel();
-                } else {
-                  StaticVarUtil.listHerf = new ArrayList<HashMap<String, String>>();
-                  JSONObject json = new JSONObject(result);
-                  JSONArray jsonArray = (JSONArray) json.get("listHerf");
-                  for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject o = (JSONObject) jsonArray.get(i);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("herf", o.getString("herf"));
-                    map.put("tittle", o.getString("tittle"));
-                    StaticVarUtil.listHerf.add(map);
-                  }
-                  SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO,
-                      MODE_PRIVATE);
-                  String accountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
-                  String sessionStr = preferences.getString(accountStr + StaticVarUtil.SESSION, "");
-                  String passwordStr = preferences.getString(StaticVarUtil.PASSWORD, "");
-
-                  StaticVarUtil.student.setAccount(accountStr);
-                  StaticVarUtil.student.setPassword(passwordStr);
-                  StaticVarUtil.session = sessionStr;
-                  Intent intent = new Intent();
-                  intent.setClass(WelcomeActivity.this, MainActivity.class);
-                  // progressDialog.cancel();
-                  startActivity(intent);
-                  finish();
-                  StaticVarUtil.quit();
-                }
-
-              } else {
-                GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
-                getImageMsgAsytask.execute();
-              }
-            } catch (Exception e) {
-              // TODO: handle exception
-              GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
-              getImageMsgAsytask.execute();
-              Log.i("LoginActivity", e.toString());
-            }
-
           }
-        }, null, true);
-    loginAsyntask.execute();
+        });
+    getPicAsyntask.execute();
+
+    // Util.getAutoParmas(getApplicationContext(), session);
+    // LoginAsynctask loginAsyntask = new LoginAsynctask(WelcomeActivity.this, acountStr, "", "",
+    // new LoginAsynctask.LoginResult() {
+    //
+    // @Override
+    // public void onLogin(String result) {
+    // // TODO Auto-generated method stub
+    //
+    // if (result == null) {
+    // GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+    // getImageMsgAsytask.execute();
+    // return;
+    // }
+    // try {
+    // if (!HttpUtilMc.CONNECT_EXCEPTION.equals(result)) {
+    // if (result.equals("error") || result.equals("errorReq")) {
+    // ViewUtil.showToast(WelcomeActivity.this, "证书过期，请重新登录。");
+    //// GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+    //// getImageMsgAsytask.execute();
+    // // progressDialog.cancel();
+    // } else {
+    // StaticVarUtil.listHerf = new ArrayList<HashMap<String, String>>();
+    // JSONObject json = new JSONObject(result);
+    // JSONArray jsonArray = (JSONArray) json.get("listHerf");
+    // for (int i = 0; i < jsonArray.length(); i++) {
+    // JSONObject o = (JSONObject) jsonArray.get(i);
+    // HashMap<String, String> map = new HashMap<String, String>();
+    // map.put("herf", o.getString("herf"));
+    // map.put("tittle", o.getString("tittle"));
+    // StaticVarUtil.listHerf.add(map);
+    // }
+    // SharedPreferences preferences = getSharedPreferences(StaticVarUtil.USER_INFO,
+    // MODE_PRIVATE);
+    // String accountStr = preferences.getString(StaticVarUtil.ACCOUNT, "");
+    // String sessionStr = preferences.getString(accountStr + StaticVarUtil.SESSION, "");
+    // String passwordStr = preferences.getString(StaticVarUtil.PASSWORD, "");
+    //
+    // StaticVarUtil.student.setAccount(accountStr);
+    // StaticVarUtil.student.setPassword(passwordStr);
+    // StaticVarUtil.session = sessionStr;
+    // Intent intent = new Intent();
+    // intent.setClass(WelcomeActivity.this, MainActivity.class);
+    // // progressDialog.cancel();
+    // startActivity(intent);
+    // finish();
+    // StaticVarUtil.quit();
+    // }
+    //
+    // } else {
+    // GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+    // getImageMsgAsytask.execute();
+    // }
+    // } catch (Exception e) {
+    // // TODO: handle exception
+    // GetImageMsgAsytask getImageMsgAsytask = new GetImageMsgAsytask(false);
+    // getImageMsgAsytask.execute();
+    // Log.i("LoginActivity", e.toString());
+    // }
+    //
+    // }
+    // }, null, true);
+    // loginAsyntask.execute();
   }
 }

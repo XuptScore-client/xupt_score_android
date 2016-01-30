@@ -619,9 +619,19 @@ public class Util {
         }
       }
       stream = new FileOutputStream(photoPath);
+      if (bmp == null) {
+        try {
+          stream.close();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        return false;
+      }
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+      return false;
     }
 
     return bmp.compress(format, quality, stream);
